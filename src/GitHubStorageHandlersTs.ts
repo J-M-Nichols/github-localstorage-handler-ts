@@ -14,7 +14,7 @@ type PathObject = {
  * Works great with React Context/Provider.
  */
 export default class GitHubStorageHandlersTs{
-    readonly pathObjects:PathObject[] = []
+    private readonly pathObjects:PathObject[] = []
 
     /**
      * Creates a new GitHubStorageHandlers with the GitHub pathname as a prefix to each path
@@ -94,6 +94,33 @@ export default class GitHubStorageHandlersTs{
      */
     public setString = (path:string, value:string):void => {
         this.getHandler(path).setString(value)
+    }
+
+    /**
+     * Sets the item of localStorage at the given path to value
+     * @param path string
+     * @param value BigInt
+     */
+    public setBigInt = (path:string, value:BigInt):void => {
+        this.getHandler(path).setBigInt(value)
+    }
+
+    /**
+     * Sets the item of localStorage at the given path to value
+     * @param path string
+     * @param value Symbol
+     */
+    public setSymbol = (path:string, value:Symbol):void => {
+        this.getHandler(path).setSymbol(value)
+    }
+    
+    /**
+     * Sets the item of localStorage at the given path to value
+     * @param path string
+     * @param value Function
+     */
+    public setFunction = (path:string, value:Function):void => {
+        this.getHandler(path).setFunction(value)
     }
     //#endregion
 

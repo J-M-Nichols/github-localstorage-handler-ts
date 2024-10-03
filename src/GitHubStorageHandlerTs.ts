@@ -7,11 +7,11 @@ export default class GitHubStorageHandlerTs {
     /**
      * The current pathname and given path joined by /
      */
-    readonly path:string
+    private readonly path:string
     /**
      * The given path
      */
-    readonly basePath:string
+    private readonly basePath:string
 
     /**
      * Creates a new GitHubStorageHandler with the GitHub pathname as a prefix to path. 
@@ -39,20 +39,25 @@ export default class GitHubStorageHandlerTs {
     public setItem = <T>(value: T):void => {
         switch(typeof value){
             case "string":
-                this.setToPath(value)
+                this.setString(value)
                 break
             case "number":
+                this.setNumber(value)
+                break
             case "bigint":
+                this.setBigInt(value)
+                break
             case "boolean":
+                this.setBoolean(value)
+                break
             case "function":
+                this.setFunction(value)
+                break
             case "undefined":
                 this.setToPath(String(value))
                 break
             case "symbol":
-                const description = value.description    
-
-                if(description) this.setToPath(description)
-                else this.setToPath('undefined')
+                this.setSymbol(value)
                 break
             case "object":
                 this.setToPath(JSON.stringify(value))
@@ -92,6 +97,33 @@ export default class GitHubStorageHandlerTs {
      */
     public setString = (value:string):void => {
         this.setToPath(value)
+    }
+
+    /**
+     * Sets the item of localStorage at this path to value
+     * @param value BigInt
+     */
+    public setBigInt = (value:BigInt):void => {
+        this.setToPath(value.toString())
+    }
+
+    /**
+     * Sets the item of localStorage at this path to value
+     * @param value Symbol
+     */
+    public setSymbol = (value:Symbol):void => {
+        const description:string|undefined = value.description
+
+        if(description) this.setToPath(description)
+        else this.setToPath('undefined')
+    }
+
+    /**
+     * Sets the item of localStorage at this path to value
+     * @param value Function
+     */
+    public setFunction = (value:Function):void => {
+        this.setToPath(String(value))
     }
     //#endregion
 
