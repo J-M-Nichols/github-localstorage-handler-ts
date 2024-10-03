@@ -44,10 +44,15 @@ export default class GitHubStorageHandlerTs {
             case "number":
             case "bigint":
             case "boolean":
-            case "symbol":
             case "function":
             case "undefined":
                 this.setToPath(String(value))
+                break
+            case "symbol":
+                const description = value.description    
+
+                if(description) this.setToPath(description)
+                else this.setToPath('undefined')
                 break
             case "object":
                 this.setToPath(JSON.stringify(value))
@@ -175,3 +180,4 @@ export default class GitHubStorageHandlerTs {
     }
     //#endregion
 }
+
