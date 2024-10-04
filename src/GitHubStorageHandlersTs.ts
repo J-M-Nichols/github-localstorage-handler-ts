@@ -50,6 +50,22 @@ export default class GitHubStorageHandlersTs{
         return handler
     }
 
+    /**
+     * Clears the saved value in localStorage at this path
+     */
+    public clearPath = (path:string):void => {
+        this.getHandler(path).clear()
+    }
+
+    /**
+     * Clears the saved value in localStorage at all saved paths
+     */
+    public clearAllPaths = ():void => {
+        this.pathObjects.forEach(({handler})=>{
+            handler.clear()
+        })
+    }
+
     //#region Setters
     /**
      * Sets the item of localStorage at the given path to value

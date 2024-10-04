@@ -22,11 +22,54 @@ describe('GitHubStorageHandlersTs', ()=>{
         return new GitHubStorageHandlersTs(testPath1, testPath2)
     }
 
+    //#region clear
+    test('should clear the value at the path', ()=>{
+        const handlers:GitHubStorageHandlersTs = beforeEach()
+        handlers.setBigInt(testPath1, 1n)
+
+        //make sure they have values before clear
+        expect(handlers.getBigInt(testPath1, 42n)).toBe(1n)
+
+        handlers.clearPath(testPath1)
+
+        //ensure all paths are now null
+        expect(handlers.getItem(testPath1)).toBeNull()
+    })
+    
+    test('should clear the value at all paths', ()=>{
+        const handlers:GitHubStorageHandlersTs = beforeEach()
+        handlers.setBigInt(testPath1, 1n)
+        handlers.setBoolean(testPath2, true)
+        handlers.setNumber(testPath3, 42)
+
+        //make sure they have values before clear
+        expect(handlers.getBigInt(testPath1, 42n)).toBe(1n)
+        expect(handlers.getBoolean(testPath2, false)).toBe(true)
+        expect(handlers.getNumber(testPath3, 0)).toBe(42)
+
+        handlers.clearAllPaths()
+
+        //ensure all paths are now null
+        expect(handlers.getItem(testPath1)).toBeNull()
+        expect(handlers.getItem(testPath2)).toBeNull()
+        expect(handlers.getItem(testPath3)).toBeNull()
+    })
+    //#endregion
+
+    //#region item
+    test('should set and get a string item with setItem and getItem', ()=>{
+        const handlers:GitHubStorageHandlersTs = beforeEach()
+        handlers.setItem(testPath3, 'value')
+        expect(handlers.getItem(testPath3)).toBe('value')
+    })
+
     test('should return null when no value set', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         expect(handlers.getItem(testPath3)).toBeNull()
     })
+    //#endregion
     
+    //#region boolean
     test('should set and get a boolean item as true', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         handlers.setBoolean(testPath3, true)
@@ -72,7 +115,9 @@ describe('GitHubStorageHandlersTs', ()=>{
         handlers.setItem(testPath3, false)
         expect(handlers.getItem(testPath3)==='true').toBe(false)
     })
+    //#endregion
 
+    //#region number
     test('should set and get a number item', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         handlers.setNumber(testPath3, 42)
@@ -91,7 +136,9 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(handlers.getNumber(testPath3, 0)).toBe(42)
         expect(Number(handlers.getItem(testPath3))).toBe(42)
     })
+    //#endregion
 
+    //#region object
     test('should set and get a object item', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const obj = {key:'test'}
@@ -121,7 +168,9 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(foundItem).not.toBeNull()
         if(foundItem) expect(JSON.parse(foundItem)).toEqual(obj)
     })
+    //#endregion
 
+    //#region string
     test('should set and get a string item', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         handlers.setString(testPath3, 'value')
@@ -140,8 +189,10 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(handlers.getString(testPath3, '')).toBe('value')
         expect(handlers.getItem(testPath3)).toBe('value')
     })
+    //#endregion
 
-    test('should set and get a BigInt item', ()=>{
+    //#region bigint
+    test('should set and get a bigint item', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const bigIntValue:BigInt = 18014398509481984n
 
@@ -154,14 +205,14 @@ describe('GitHubStorageHandlersTs', ()=>{
         if(foundItem) expect(BigInt(foundItem)).toBe(bigIntValue)
     })
 
-    test('should get a BigInt item when none is set', ()=>{
+    test('should get a bigint item when none is set', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const bigIntValue:BigInt = 18014398509481984n
 
         expect(handlers.getBigInt(testPath3, bigIntValue)).toBe(bigIntValue)
     })
 
-    test('should set and get a BigInt item with setItem and getItem',()=>{
+    test('should set and get a bigint item with setItem and getItem',()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const bigIntValue:BigInt = 18014398509481984n
 
@@ -173,8 +224,10 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(foundItem).not.toBeNull()
         if(foundItem) expect(BigInt(foundItem)).toBe(bigIntValue)
     })
+    //#endregion
 
-    test('should set and get a Symbol item', ()=>{
+    //#region symbol
+    test('should set and get a symbol item', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const key = 'testKey'
         const symbol = Symbol(key)
@@ -195,7 +248,7 @@ describe('GitHubStorageHandlersTs', ()=>{
         if(foundItem) expect(foundItem).toBe(key)
     })
 
-    test('should get a Symbol item when none is set', ()=>{
+    test('should get a symbol item when none is set', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const key = 'testKey'
         const symbol = Symbol(key)
@@ -205,7 +258,7 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(symbol.description).toBe(foundSymbol.description)
     })
 
-    test('should get a Symbol item with setItem and getItem', ()=>{
+    test('should get a symbol item with setItem and getItem', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const key = 'testKey'
         const symbol = Symbol(key)
@@ -225,8 +278,10 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(foundItem).not.toBeNull()
         if(foundItem) expect(foundItem).toBe(key)
     })
+    //#endregion
 
-    test('should set and get a Function item', ()=>{
+    //#region function
+    test('should set and get a function item', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const func:Function = (a:number, b:number) => {
             return a * b
@@ -243,7 +298,7 @@ describe('GitHubStorageHandlersTs', ()=>{
         if(foundItem) expect(eval(foundItem)(8, 7)).toBe(func(7, 8))
     })
 
-    test('should get a Function item when none is set', ()=>{
+    test('should get a function item when none is set', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const func:Function = (a:number, b:number) => {
             return a+b
@@ -253,7 +308,7 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(foundItem(5, 6)).toBe(func(6, 5))
     })
 
-    test('should get a Function item with setItem and getItem', ()=>{
+    test('should get a function item with setItem and getItem', ()=>{
         const handlers:GitHubStorageHandlersTs = beforeEach()
         const func:Function = (a:number, b:number) => {
             return a-b
@@ -269,4 +324,5 @@ describe('GitHubStorageHandlersTs', ()=>{
         expect(foundItem).not.toBeNull()
         if(foundItem) expect(eval(foundItem)(8, 7)).toBe(func(8, 7))
     })
+    //#endregion
 })

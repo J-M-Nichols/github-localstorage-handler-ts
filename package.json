@@ -1,6 +1,6 @@
 {
   "name": "github-localstorage-hander-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Handles the use of localStorage for TypeScript projects published to github pages.",
   "main": "index.ts",
   "keywords": [

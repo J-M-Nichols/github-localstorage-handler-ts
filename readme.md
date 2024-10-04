@@ -4,6 +4,8 @@
 
 GitHub Storage Handler Ts is a utility for managing `localStorage` in React applications using TypeScript hosted on GitHub Pages. It provides a simple interface to handle storage operations with path-based organization, making it ideal for use in Redux slices and React context.
 
+View [GitHub repository](https://github.com/J-M-Nichols/github-localstorage-handler-ts)
+
 ## Features
 
 - Easy management of `localStorage` for GitHub Pages.

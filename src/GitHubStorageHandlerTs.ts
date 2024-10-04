@@ -8,10 +8,6 @@ export default class GitHubStorageHandlerTs {
      * The current pathname and given path joined by /
      */
     private readonly path:string
-    /**
-     * The given path
-     */
-    private readonly basePath:string
 
     /**
      * Creates a new GitHubStorageHandler with the GitHub pathname as a prefix to path. 
@@ -20,7 +16,13 @@ export default class GitHubStorageHandlerTs {
     public constructor(path:string){
         const storagePrefix:string = window.location.pathname
         this.path = `${storagePrefix}/${path}`
-        this.basePath = path
+    }
+
+    /**
+     * Clears the saved value in localStorage at this path
+     */
+    public clear = ():void => {
+        localStorage.removeItem(this.path)
     }
 
     //#region Setters
